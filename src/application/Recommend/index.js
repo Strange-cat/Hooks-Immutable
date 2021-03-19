@@ -5,6 +5,8 @@ import Scroll from "../../components/scroll";
 import { Content } from "./style";
 import { useSelector, useDispatch } from "react-redux";
 import * as actionTypes from "./store/actionCreators";
+import { forceCheck } from "react-lazyload";
+import Loading from "../../baseUI/loading/index";
 
 function Recommend(props) {
   const bannerList = useSelector((state) => {
@@ -13,11 +15,14 @@ function Recommend(props) {
   const recommendList = useSelector((state) =>
     state.getIn(["recommend", "recommendList"])
   );
+  const enterLoading = useSelector((state) =>
+    state.getIn(["recommend", "enterLoading"])
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(actionTypes.getBannerList());
-    dispatch(actionTypes.getRecommendList());
+    !bannerList.size && dispatch(actionTypes.getBannerList());
+    !recommendList.size && dispatch(actionTypes.getRecommendList());
     //eslint-disable-next-line
   }, []);
 
@@ -26,12 +31,13 @@ function Recommend(props) {
 
   return (
     <Content>
-      <Scroll className="list">
+      <Scroll className="list" onScroll={forceCheck}>
         <div>
           <Slider bannerList={bannerListJS}></Slider>
           <RecommendList recommendList={recommendListJS}></RecommendList>
         </div>
       </Scroll>
+      {enterLoading ? <Loading></Loading> : null}
     </Content>
   );
 }
