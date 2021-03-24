@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-03-24 20:34:19
+ * @LastEditTime: 2021-03-24 21:46:18
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \cloud-music\src\application\Singer\style.js
+ */
 import styled from "styled-components";
 import style from "../../assets/global-style";
 
@@ -31,7 +39,7 @@ export const ImgWrapper = styled.div`
   height: 0;
   padding-top: 75%;
   transform-origin: top;
-  background: url (${(props) => props.bgUrl});
+  background: url(${(props) => props.bgUrl});
   background-size: cover;
   z-index: 50;
   .filter {

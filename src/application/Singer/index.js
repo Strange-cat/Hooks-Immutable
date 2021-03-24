@@ -11,8 +11,20 @@ import Header from "../../baseUI/header";
 import Scroll from "../../baseUI/scroll/index";
 import SongsList from "../SongsList";
 import { HEADER_HEIGHT } from "./../../api/config";
+import { connect } from 'react-redux';
+import { isEmptyObject } from '../../api/utils';
+import { changeEnterLoading, getSingerInfo } from "./store/actionCreators";
+import Loading from "../../baseUI/loading";
+
 
 function Singer(props) {
+  const id = props.match.params.id;
+  const { artist: immutableArtist,
+    songs: immutableSongs, loading } = props
+  const { getSingerDataDispatch } = props
+  const artist = immutableArtist.toJS();
+  const songs = immutableSongs.toJS();
+  console.log(`songs`, songs)
   const [showStatus, setShowStatus] = useState(true);
   const collectButton = useRef();
   const imageWrapper = useRef();
@@ -22,9 +34,12 @@ function Singer(props) {
   const layer = useRef();
   // 图片初始高度
   const initialHeight = useRef(0);
-
   // 往上偏移的尺寸，露出圆角
   const OFFSET = 5;
+
+  useEffect(() => {
+    getSingerDataDispatch(id)
+  }, [getSingerDataDispatch, id])
 
   useEffect(() => {
     let h = imageWrapper.current.offsetHeight;
@@ -36,112 +51,7 @@ function Singer(props) {
     //eslint-disable-next-line
   }, []);
 
-  const artist = {
-    picUrl:
-      "https://p2.music.126.net/W__FCWFiyq0JdPtuLJoZVQ==/109951163765026271.jpg",
-    name: "薛之谦",
-    hotSongs: [
-      {
-        name: "我好像在哪见过你",
-        ar: [{ name: "薛之谦" }],
-        al: {
-          name: "薛之谦专辑",
-        },
-      },
-      {
-        name: "我好像在哪见过你",
-        ar: [{ name: "薛之谦" }],
-        al: {
-          name: "薛之谦专辑",
-        },
-      },
-      {
-        name: "我好像在哪见过你",
-        ar: [{ name: "薛之谦" }],
-        al: {
-          name: "薛之谦专辑",
-        },
-      },
-      {
-        name: "我好像在哪见过你",
-        ar: [{ name: "薛之谦" }],
-        al: {
-          name: "薛之谦专辑",
-        },
-      },
-      {
-        name: "我好像在哪见过你",
-        ar: [{ name: "薛之谦" }],
-        al: {
-          name: "薛之谦专辑",
-        },
-      },
-      {
-        name: "我好像在哪见过你",
-        ar: [{ name: "薛之谦" }],
-        al: {
-          name: "薛之谦专辑",
-        },
-      },
-      {
-        name: "我好像在哪见过你",
-        ar: [{ name: "薛之谦" }],
-        al: {
-          name: "薛之谦专辑",
-        },
-      },
-      {
-        name: "我好像在哪见过你",
-        ar: [{ name: "薛之谦" }],
-        al: {
-          name: "薛之谦专辑",
-        },
-      },
-      {
-        name: "我好像在哪见过你",
-        ar: [{ name: "薛之谦" }],
-        al: {
-          name: "薛之谦专辑",
-        },
-      },
-      {
-        name: "我好像在哪见过你",
-        ar: [{ name: "薛之谦" }],
-        al: {
-          name: "薛之谦专辑",
-        },
-      },
-      {
-        name: "我好像在哪见过你",
-        ar: [{ name: "薛之谦" }],
-        al: {
-          name: "薛之谦专辑",
-        },
-      },
-      {
-        name: "我好像在哪见过你",
-        ar: [{ name: "薛之谦" }],
-        al: {
-          name: "薛之谦专辑",
-        },
-      },
-      {
-        name: "我好像在哪见过你",
-        ar: [{ name: "薛之谦" }],
-        al: {
-          name: "薛之谦专辑",
-        },
-      },
-      {
-        name: "我好像在哪见过你",
-        ar: [{ name: "薛之谦" }],
-        al: {
-          name: "薛之谦专辑",
-        },
-      },
-      // 省略 20 条
-    ],
-  };
+
 
   const handleScroll = useCallback((pos) => {
     let height = initialHeight.current;
@@ -157,8 +67,8 @@ function Singer(props) {
 
     if (newY > 0) {
       // 处理往下拉的情况，效果：图片放大，按钮跟着偏移
-      imageDOM.style["transform"] = `scale (${1 + percent})`;
-      buttonDOM.style["transform"] = `translate3d (0, ${newY}px, 0)`;
+      imageDOM.style["transform"] = `scale(${1 + percent})`;
+      buttonDOM.style["transform"] = `translate3d(0, ${newY}px, 0)`;
       layerDOM.style.top = `${height - OFFSET + newY}px`;
     } else if (newY >= minScrollY) {
       // 往上滑动，但是遮罩还没超过 Header 部分
@@ -194,7 +104,7 @@ function Singer(props) {
       onExited={() => props.history.goBack()}
     >
       <Container>
-        <Header title={"头部"} ref={header}></Header>
+        <Header title={artist.name} ref={header}></Header>
         <ImgWrapper bgUrl={artist.picUrl} ref={imageWrapper}>
           <div className="filter"></div>
         </ImgWrapper>
@@ -205,12 +115,29 @@ function Singer(props) {
         <BgLayer ref={layer}></BgLayer>
         <SongListWrapper ref={songScrollWrapper}>
           <Scroll ref={songScroll} onScroll={handleScroll}>
-            <SongsList songs={artist.hotSongs} showCollect={false}></SongsList>
+            {!isEmptyObject(songs) ?
+              <SongsList songs={songs} showCollect={false}></SongsList> : null
+            }
           </Scroll>
         </SongListWrapper>
+        {loading ? <Loading></Loading> : null}
       </Container>
     </CSSTransition>
   );
 }
-
-export default React.memo(Singer);
+// 映射 Redux 全局的 state 到组件的 props 上
+const mapStateToProps = state => ({
+  artist: state.getIn(["singerInfo", "artist"]),
+  songs: state.getIn(["singerInfo", "songsOfArtist"]),
+  loading: state.getIn(["singerInfo", "loading"]),
+});
+// 映射 dispatch 到 props 上
+const mapDispatchToProps = dispatch => {
+  return {
+    getSingerDataDispatch(id) {
+      dispatch(changeEnterLoading(true));
+      dispatch(getSingerInfo(id));
+    }
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Singer));

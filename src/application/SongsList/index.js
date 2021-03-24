@@ -1,10 +1,18 @@
+/*
+ * @Author: your name
+ * @Date: 2021-03-24 20:34:19
+ * @LastEditTime: 2021-03-24 21:36:51
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \cloud-music\src\application\SongsList\index.js
+ */
 import React from "react";
 import { SongList, SongItem } from "./style";
 import { getName } from "../../api/utils";
 
 const SongsList = React.forwardRef((props, refs) => {
   const { collectCount, showCollect, songs } = props;
-
+console.log(`songs`, songs)
   const totalCount = songs.length;
 
   const selectItem = (e, index) => {

@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-03-18 23:37:33
+ * @LastEditTime: 2021-03-24 20:36:10
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \cloud-music\src\api\request.js
+ */
 import { axiosInstance } from "./config";
 
 // 轮播图
@@ -30,4 +38,9 @@ export const getRankListRequest = () => {
 // 歌单详情
 export const getAlbumDetailRequest = (id) => {
   return axiosInstance.get(`/playlist/detail?id=${id}`);
+};
+
+// 歌手详情
+export const getSingerInfoRequest = id => {
+  return axiosInstance.get(`/artists?id=${id}`);
 };
