@@ -24,7 +24,6 @@ function Singer(props) {
   const { getSingerDataDispatch } = props
   const artist = immutableArtist.toJS();
   const songs = immutableSongs.toJS();
-  console.log(`songs`, songs)
   const [showStatus, setShowStatus] = useState(true);
   const collectButton = useRef();
   const imageWrapper = useRef();
@@ -51,7 +50,10 @@ function Singer(props) {
     //eslint-disable-next-line
   }, []);
 
-
+  const setShowStatusFalse = useCallback(() => {
+    console.log(`11`, 11)
+    setShowStatus(false);
+  }, []);
 
   const handleScroll = useCallback((pos) => {
     let height = initialHeight.current;
@@ -104,7 +106,7 @@ function Singer(props) {
       onExited={() => props.history.goBack()}
     >
       <Container>
-        <Header title={artist.name} ref={header}></Header>
+        <Header title={artist.name} ref={header} handleClick={setShowStatusFalse}></Header>
         <ImgWrapper bgUrl={artist.picUrl} ref={imageWrapper}>
           <div className="filter"></div>
         </ImgWrapper>
