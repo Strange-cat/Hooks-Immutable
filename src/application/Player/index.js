@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-28 14:10:26
- * @LastEditTime: 2021-03-28 14:17:56
+ * @LastEditTime: 2021-03-28 14:32:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \cloud-music\src\application\Player\index.js
@@ -19,10 +19,30 @@ import {
   changePlayMode,
   changeFullScreen
 } from "./store/actionCreators";
+import MiniPlayer from './miniPlayer';
+import NormalPlayer from './normalPlayer';
+
 
 function Player(props) {
+  const { fullScreen } = props;
+  const { toggleFullScreenDispatch } = props;
+  const currentSong = {
+    al: { picUrl: "https://p1.music.126.net/JL_id1CFwNJpzgrXwemh4Q==/109951164172892390.jpg" },
+    name: "木偶人",
+    ar: [{ name: "薛之谦" }]
+  }
   return (
-    <div>Player</div>
+    <div>
+      <MiniPlayer
+        song={currentSong}
+        fullScreen={fullScreen}
+        toggleFullScreen={toggleFullScreenDispatch}
+      />
+      <NormalPlayer
+        song={currentSong}
+        fullScreen={fullScreen}
+        toggleFullScreen={toggleFullScreenDispatch} />
+    </div>
   )
 }
 

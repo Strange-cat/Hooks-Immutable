@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-28 14:10:43
- * @LastEditTime: 2021-03-28 14:12:34
+ * @LastEditTime: 2021-03-28 14:49:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \cloud-music\src\application\Player\store\reducer.js
